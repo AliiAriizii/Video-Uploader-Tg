@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li form {
+            display: inline;
+        }
+        .video-info {
+            flex: 1;
+        }
+        .video-info strong {
+            display: block;
+            font-size: 1.2em;
+        }
+        .delete-button {
+            background-color: #f44336;
+        }
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <h1>پنل مدیریت</h1>
+    
+    <h2>افزودن دسته‌بندی</h2>
+    <form action="/category/add" method="post">
+        <label for="title">عنوان:</label>
+        <input type="text" name="title" id="title" required>
+        
+        <label for="slug">شناسه:</label>
+        <input type="text" name="slug" id="slug" required>
+        
+        <label for="isActive">فعال:</label>
+        <input type="checkbox" name="isActive" id="isActive">
+        
+        <button type="submit">افزودن دسته‌بندی</button>
+    </form>
+    
+    <h2>افزودن ویدئو</h2>
+    <form action="/add" method="post" enctype="multipart/form-data">
+        <label for="title">عنوان:</label>
+        <input type="text" name="title" id="title" required>
+        
+        <label for="category">دسته‌بندی:</label>
+        <select name="category" id="category" required>
+            {% for category in data.categories %}
+            <option value="{{ category.id }}">{{ category.title }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="file">فایل:</label>
+        <input type="file" name="file" id="file" required>
+        
+        <label for="required_points">امتیاز مورد نیاز:</label>
+        <input type="number" name="required_points" id="required_points" value="0" required>
+        
+        <label for="isActive">فعال:</label>
+        <input type="checkbox" name="isActive" id="isActive">
+        
+        <button type="submit">افزودن ویدئو</button>
+    </form>
+    
+    <h2>ویدئوها</h2>
+    <ul>
+        {% for video in data.videos %}
+        <li>
+            <div class="video-info">
+                <strong>{{ video.title }}</strong>
+                <span>دسته‌بندی: {{ video.Catgory_id }}</span>
+                <span>امتیاز مورد نیاز: {{ video.cost }}</span>
+            </div>
+            <form action="/delete" method="post" style="display:inline;">
+                <input type="hidden" name="video_id" value="{{ video.id }}">
+                <button type="submit" class="delete-button">حذف</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
