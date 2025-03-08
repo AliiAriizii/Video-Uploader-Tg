@@ -5,7 +5,7 @@ from create_db import User, Video, session
 API_TOKEN = ''
 bot = TeleBot(API_TOKEN)
 UPLOAD_FOLDER = 'uploaded_videos'
-
+"--------------------------------------------------------------------------------"
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     user_id = message.from_user.id
